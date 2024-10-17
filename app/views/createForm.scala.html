@@ -1,8 +1,9 @@
-@(computerForm: Form[Computer], companies: java.util.Map[String, String])(implicit request: Http.Request, messages: play.i18n.Messages)
-
 @import helper._
+@import java.util.Map
 
-@implicitField = @{ FieldConstructor(tags.forms.field_constructor.render) }
+@(computerForm: Form[Computer], companies: Map[String, String])(implicit request: Http.Request, messages: play.i18n.Messages)
+
+@implicitField: FieldConstructor = @{ FieldConstructor(tags.forms.field_constructor.render) }
 
 @main {
 
