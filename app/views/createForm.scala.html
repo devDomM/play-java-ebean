@@ -1,13 +1,13 @@
 @import helper._
-@import java.util.Map
+@import java.util
 
-@(computerForm: Form[Computer], companies: Map[String, String])(implicit request: Http.Request, messages: play.i18n.Messages)
+@(computerForm: Form[Computer], companies: util.Map[String, String])(implicit request: Http.Request, messages: play.i18n.Messages)
 
 @implicitField: FieldConstructor = @{ FieldConstructor(tags.forms.field_constructor.render) }
 
 @main {
 
-    <h1 class="my-3" id="page-title">Add a computer</h1>
+    <h1 class="my-3" id="page-title">@messages("computers.form.create.title")</h1>
 
     @form(routes.HomeController.save()) {
 

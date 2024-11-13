@@ -41,9 +41,7 @@ public class HomeController extends Controller {
     /**
      * This result directly redirect to application home.
      */
-    private final Result GO_HOME = Results.redirect(
-        routes.HomeController.list(0, "name", "asc", "")
-    );
+    private final Result GO_HOME = Results.redirect(routes.HomeController.list(0, "name", "asc", ""));
 
     /**
      * Handle default path requests, redirect to computers list

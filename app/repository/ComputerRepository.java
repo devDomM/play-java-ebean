@@ -1,17 +1,12 @@
 package repository;
 
 import io.ebean.DB;
-import io.ebean.Model;
 import io.ebean.PagedList;
 import io.ebean.Transaction;
 import models.Computer;
 
 import javax.inject.Inject;
 import java.util.Optional;
-import java.util.concurrent.CompletionStage;
-
-import static java.util.concurrent.CompletableFuture.supplyAsync;
-
 /**
  * A repository that executes database operations in a different
  * execution context.
@@ -48,41 +43,23 @@ public class ComputerRepository {
         return DB.find(Computer.class).setId(id).findOneOrEmpty();
     }
 
-    public CompletionStage<Optional<Long>> update(Long id, Computer newComputerData) {
-        return supplyAsync(() -> {
-            Transaction txn = DB.beginTransaction();
-            Optional<Long> value = Optional.empty();
-            try {
-                Computer savedComputer = DB.find(Computer.class).setId(id).findOne();
-                if (savedComputer != null) {
-                    savedComputer.update(newComputerData);
-                    txn.commit();
-                    value = Optional.of(id);
-                }
-            } finally {
-                txn.end();
+    public void update(Long id, Computer newComputerData) {
+        try(Transaction txn = DB.beginTransaction()) {
+            Computer savedComputer = DB.find(Computer.class).setId(id).findOne();
+            if (savedComputer != null) {
+                savedComputer.fill(newComputerData);
+                DB.update(savedComputer);
+                txn.commit();
             }
-            return value;
-        }, executionContext);
+        }
     }
 
-    public CompletionStage<Optional<Long>> delete(Long id) {
-        return supplyAsync(() -> {
-            try {
-                Optional<Computer> computerOptional = DB.find(Computer.class).setId(id).findOneOrEmpty();
-                computerOptional.ifPresent(Model::delete);
-                return computerOptional.map(c -> c.getId());
-            } catch (Exception e) {
-                return Optional.empty();
-            }
-        }, executionContext);
+    public void delete(Long id) {
+        DB.delete(Computer.class, id);
     }
 
-    public CompletionStage<Long> insert(Computer computer) {
-        return supplyAsync(() -> {
-             computer.setId(System.currentTimeMillis()); // not ideal, but it works
-             DB.insert(computer);
-             return computer.getId();
-        }, executionContext);
+    public void insert(Computer computer) {
+         computer.setId(System.currentTimeMillis()); // not ideal, but it works
+         DB.insert(computer);
     }
 }

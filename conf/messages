@@ -1,5 +1,7 @@
 # Messages
 
 computers.list.title={0,choice,0#No computers|1#One computer|1<{0,number,integer} computers} found
+computers.form.edit.title=Edit computer
+computers.form.create.title=Create computer
 
 

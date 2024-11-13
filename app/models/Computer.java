@@ -13,8 +13,6 @@ import java.util.Date;
 @Entity 
 public class Computer extends BaseModel {
 
-    private static final long serialVersionUID = 1L;
-
     @Constraints.Required
     private String name;
     
@@ -27,12 +25,11 @@ public class Computer extends BaseModel {
     @ManyToOne
     private Company company;
 
-    public void update(Computer newComputerData) {
+    public void fill(Computer newComputerData) {
         setName(newComputerData.getName());
         setCompany(newComputerData.getCompany());
         setDiscontinued(newComputerData.getDiscontinued());
         setIntroduced(newComputerData.getIntroduced());
-        update();
     }
 
     public String getName() {
