@@ -13,12 +13,8 @@ import java.util.Optional;
  */
 public class ComputerRepository {
 
-    private final DatabaseExecutionContext executionContext;
-
     @Inject
-    public ComputerRepository(DatabaseExecutionContext executionContext) {
-        this.executionContext = executionContext;
-    }
+    public ComputerRepository() {}
 
     /**
      * Return a paged list of computer
@@ -39,10 +35,20 @@ public class ComputerRepository {
                     .findPagedList();
     }
 
+    /**
+     * find a computer by id
+     * @param id id to lookup
+     * @return optional containing the computer object
+     */
     public Optional<Computer> lookup(Long id) {
         return DB.find(Computer.class).setId(id).findOneOrEmpty();
     }
 
+    /**
+     * update a computer entity
+     * @param id id of the database entity to update
+     * @param newComputerData data to update
+     */
     public void update(Long id, Computer newComputerData) {
         try(Transaction txn = DB.beginTransaction()) {
             Computer savedComputer = DB.find(Computer.class).setId(id).findOne();
@@ -54,10 +60,18 @@ public class ComputerRepository {
         }
     }
 
+    /**
+     * delete a computer entity from the database
+     * @param id id of the computer to delete
+     */
     public void delete(Long id) {
         DB.delete(Computer.class, id);
     }
 
+    /**
+     * create a new computer database entry
+     * @param computer object to persist
+     */
     public void insert(Computer computer) {
          computer.setId(System.currentTimeMillis()); // not ideal, but it works
          DB.insert(computer);

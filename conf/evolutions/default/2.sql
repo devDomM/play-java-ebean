@@ -1,4 +1,4 @@
-# --- Sample dataset
+# --- Even though evolution should onyl be used for data structure, we add some sample data on application start
 
 # --- !Ups
 

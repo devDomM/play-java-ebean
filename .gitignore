@@ -18,3 +18,4 @@ modules/store/app/.idea
 projectFilesBackup*
 *.suo
 .vs
+.bsp
